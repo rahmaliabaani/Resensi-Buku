@@ -46,16 +46,16 @@
               {{ auth()->user()->name }}
             </a>
             <ul class="dropdown-menu">
-            @if (auth()->user()->is_admin == 1)
-              <li><a class="dropdown-item" href="/admin">Halaman Utama</a></li>
+            @if (auth()->user()->role == 'pengguna')
+              <li><a class="dropdown-item" href="/pengguna">Halaman Utama</a></li>
               <li>
                 <form action="/logout" method="POST">
                   @csrf
                   <button type="submit" class="dropdown-item">Keluar</button>
                 </form>
               </li>
-            @elseif (auth()->user()->is_admin == 0)
-              <li><a class="dropdown-item" href="/dashboard">Dashbord Kamu</a></li>
+            @elseif (auth()->user()->role == 'admin')
+              <li><a class="dropdown-item" href="/admin">Dashbord Kamu</a></li>
               <li>
                 <form action="/logout" method="POST">
                   @csrf

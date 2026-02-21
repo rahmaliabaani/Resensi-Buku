@@ -6,7 +6,7 @@ use App\Http\Controllers\BukuController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\KategoriController;
-
+use App\Http\Controllers\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +19,7 @@ use App\Http\Controllers\KategoriController;
 |
 */
 
+// Frontend
 Route::get('/', [BukuController::class, 'beranda']);
 
 Route::get('/buku', [BukuController::class, 'indexBuku']);
@@ -31,20 +32,39 @@ Route::get('/informasi', function () {
     ]);
 });
 
+Route::get('/kategori', [KategoriController::class, 'indexKategori']);
+
+// Backend
+// Admin & Pengguna
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
 
 Route::post('/login', [LoginController::class, 'authenticate']);
 
-Route::get('/kategori', [KategoriController::class, 'indexKategori']);
 
-Route::get('/admin', [AdminController::class, 'index']);
+Route::get('/all-kategori', [KategoriController::class, 'index']);
+
+Route::get('/all-pengguna', [AdminController::class, 'indexPengguna'])->name('admin.data-pengguna.index');
 
 Route::post('/logout', [LoginController::class, 'logout']);
 
-Route::get('/all-resensi', [BukuController::class, 'index']);
+// Admin
+Route::get('/admin', [AdminController::class, 'index']);
+
+// Pengguna
+Route::get('/pengguna', [User::class, 'indexPengguna']);
+
+Route::get('/pengguna/data-resensi', [User::class, 'indexBukuPengguna'])->name('pengguna.data-resensi.index');
+Route::get('/pengguna/data-resensi/tambah', [BukuController::class, 'createBukuPengguna']);
+Route::post('/pengguna/data-resensi/store', [BukuController::class, 'storeBukuPengguna'])->name('pengguna.data-resensi.store');
+Route::get('/pengguna/data-resensi/{slug}/ubah', [BukuController::class, 'editBukuPengguna'])->name('pengguna.data-resensi.edit');
+Route::post('/pengguna/data-resensi/{slug}/update', [BukuController::class, 'updateBukuPengguna'])->name('pengguna.data-resensi.update');
 
 // pencarian di dashboard admin all-resensi
 Route::get('/all-resensi', [BukuController::class, 'index'])->name('admin.data-resensi.index');
+
+// pencarian di dashboard admin all-kategori
+Route::get('/all-kategori', [KategoriController::class, 'index'])->name('admin.data-kategori.index');
+
 
 // pencarian di buku utama
 Route::get('/buku', [BukuController::class, 'indexBuku'])->name('buku');

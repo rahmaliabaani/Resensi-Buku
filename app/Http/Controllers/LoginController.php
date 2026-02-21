@@ -18,18 +18,18 @@ class LoginController extends Controller
     public function authenticate(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
-            'email' => 'required',
+            'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        if (Auth::attempt($credentials) && auth()->user()->is_admin == 0) {
-            $request->session()->regenerate();
-
-            return redirect()->intended('dashboard');
-        } elseif (Auth::attempt($credentials) && auth()->user()->is_admin == 1) {
+        if (Auth::attempt($credentials) && auth()->user()->role == 'admin') {
             $request->session()->regenerate();
 
             return redirect()->intended('admin');
+        } elseif (Auth::attempt($credentials) && auth()->user()->role == 'pengguna') {
+            $request->session()->regenerate();
+
+            return redirect()->intended('pengguna');
         }
 
         return back()->with('loginError', 'Gagal masuk');

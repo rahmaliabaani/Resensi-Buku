@@ -15,6 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   {{-- icon bootstrap --}}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <script src="/../../js/ckeditor5.js"></script>
 </head>
 
 <body>
@@ -28,15 +29,34 @@
       </button>
       <div class="collapse navbar-collapse fs-6 justify-content-end" id="navbarNavDropdown">
         <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link {{ ($title === 'Data Resensi') ? 'active' : '' }}" href="/all-resensi">Data Resensi</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {{ ($title === 'Data Kategori') ? 'active' : '' }}" href="/all-kategori">Data Kategori</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {{ ($title === 'Data Pengguna') ? 'active' : '' }}" href="/all-pengguna">Data Pengguna</a>
-          </li>
+          @if (auth()->user()->role == 'admin')
+            <li class="nav-item">
+              <a class="nav-link {{ ($title === 'Dashboard') ? 'active' : '' }}" href="/admin">Dashboard</a>
+            </li>   
+          @else
+            <li class="nav-item">
+              <a class="nav-link {{ ($title === 'Dashboard Pengguna') ? 'active' : '' }}" href="/pengguna">Dashboard</a>
+            </li>    
+          @endif
+          @if (auth()->user()->role == 'admin')
+            <li class="nav-item">
+              <a class="nav-link {{ ($title === 'Data Resensi') ? 'active' : '' }}" href="/all-resensi">Data Resensi</a>
+            </li>  
+          @else
+            <li class="nav-item">
+              <a class="nav-link {{ ($title === 'Data Resensi Pengguna') ? 'active' : '' }}" href="/pengguna/data-resensi">Data Resensi</a>
+            </li> 
+          @endif
+          @if (auth()->user()->role !== 'pengguna')
+              <li class="nav-item">
+                <a class="nav-link {{ ($title === 'Data Kategori') ? 'active' : '' }}" href="/all-kategori">Data Kategori</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link {{ ($title === 'Data Pengguna') ? 'active' : '' }}" href="/all-pengguna">
+                      Data Pengguna
+                  </a>
+              </li>
+          @endif
         <form action="/logout" method="POST">
           @csrf
           <button type="submit" class="nav-link border-0 bg-light fs-6">Keluar</button>
@@ -45,3 +65,8 @@
       </div>
     </div>
   </nav>
+
+  <!-- JS Bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

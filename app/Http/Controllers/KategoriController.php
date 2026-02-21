@@ -25,7 +25,10 @@ class KategoriController extends Controller
 
     public function index()
     {
-        //
+        return view('admin.data-kategori.index', [
+            "title" => "Data Kategori",
+            "kategori" => Kategori::latest('kategoris.created_at')->paginate(20)->withQueryString(),
+        ]);
     }
 
     /**

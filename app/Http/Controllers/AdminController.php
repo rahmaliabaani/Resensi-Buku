@@ -13,9 +13,17 @@ class AdminController extends Controller
     {
         return view('admin.index', [
             'title' => 'Dashboard Admin',
-            "totalBuku" => Buku::count(),
-            "totalKategori" => Kategori::count(),
-            "totalPengguna" => User::where('is_admin', '0')->get()->count(),
+            'totalBuku' => Buku::count(),
+            'totalKategori' => Kategori::count(),
+            'totalPengguna' => User::where('role', 'admin')->get()->count(),
+        ]);
+    }
+
+    public function indexPengguna()
+    {
+        return view('admin.data-pengguna.index', [
+            "title" => "Data Pengguna",
+            "user" => User::where('role', 'pengguna')->paginate(20)->withQueryString()
         ]);
     }
 }

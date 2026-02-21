@@ -3,15 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Buku;
+use App\Models\Kategori;
 
 class User extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function indexPengguna()
     {
-        //
+        return view('pengguna.index', [
+            'title' => 'Dashboard Pengguna',
+            'totalBuku' => Buku::where('user_id', auth()->id())->count(),
+            'totalKategori' => Kategori::count(),
+        ]);
+    }
+
+    public function indexBukuPengguna()
+    {            
+        return view('pengguna.data-resensi.index', [
+            'title' => 'Data Resensi Pengguna',
+            'bukuPengguna' => Buku::where('user_id', auth()->id())->latest('bukus.waktu_post')->with('kategori')->with('user')->filter()->paginate(20)->withQueryString(),
+            'namaPengguna' => auth()->user()->name,
+            ]);
     }
 
     /**

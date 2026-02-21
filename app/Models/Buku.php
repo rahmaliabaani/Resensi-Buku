@@ -8,7 +8,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Buku extends Model
 {
-    use HasFactory;
+    // use HasFactory;
+    protected $fillable = [
+        'judul',
+        'kategori_id',
+        'user_id',
+        'slug',
+        'pengarang',
+        'penerbit',
+        'tahun_terbit',
+        'tebal_buku',
+        'isi'
+    ];
 
     public function scopeFilter(Builder $query) : void
     {
