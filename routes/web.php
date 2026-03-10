@@ -58,6 +58,7 @@ Route::get('/pengguna/data-resensi/tambah', [BukuController::class, 'createBukuP
 Route::post('/pengguna/data-resensi/store', [BukuController::class, 'storeBukuPengguna'])->name('pengguna.data-resensi.store');
 Route::get('/pengguna/data-resensi/{slug}/ubah', [BukuController::class, 'editBukuPengguna'])->name('pengguna.data-resensi.edit');
 Route::post('/pengguna/data-resensi/{slug}/update', [BukuController::class, 'updateBukuPengguna'])->name('pengguna.data-resensi.update');
+Route::delete('/pengguna/data-resensi/{slug}', [BukuController::class, 'destroyBukuPengguna'])->name('pengguna.data-resensi.destroy');
 
 // pencarian di dashboard admin all-resensi
 Route::get('/all-resensi', [BukuController::class, 'index'])->name('admin.data-resensi.index');

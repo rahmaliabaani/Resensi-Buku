@@ -20,9 +20,9 @@
       @foreach ($buku as $bk)
         <div class="col-md-4 my-2 d-flex justify-content-center">
             <div class="card" style="width: 25rem;">
-              <img src="/img/buku.jpg" class="card-img-top" alt="...">
+              <img src="{{ $bk->gambar_url }}" class="card-img-top" alt="..." style="height: 15rem;">
                 <div class="card-body">
-                  <h4><a href="/buku/{{ $bk->slug }}" class="text-decoration-none">{{ $bk->judul }}</a></h4>
+                  <h4><a href="/buku/{{ $bk->slug }}" class="text-decoration-none">{{ Str::limit(strip_tags($bk->judul), 25, '...') }}</a></h4>
                   <h6><a href="/penulis/" class="text-decoration-none">{{ $bk->user->name }}</a> | <a href="/kategori/" class="text-decoration-none">{{ $bk->kategori->nama }}</a></h6>
                   <p class="text-truncate"> {{ strip_tags($bk->isi) }}</p>
                 </div>

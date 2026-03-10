@@ -19,7 +19,7 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('pengguna.data-resensi.update', $buku->slug) }}" method="POST">
+            <form action="{{ route('pengguna.data-resensi.update', $buku->slug) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label for="judul" class="form-label">Judul Resensi</label>
@@ -55,10 +55,11 @@
                     <label for="tebal-buku" class="form-label mt-2">Tebal Buku</label>
                     <input class="form-control form-control-sm" id="tebal_buku" name="tebal_buku" type="number" value="{{ old('tebal_buku', $buku->tebal_buku) }}">
                 </div>
-                {{-- <div class="form-group">
+                <div class="form-group">
                     <label for="gambar" class="form-label mt-2">Gambar Buku</label>
-                    <input class="form-control form-control-sm" id="gambar" type="file">
-                </div> --}}
+                    <img id="preview-gambar" src="{{ isset($buku) ? $buku->gambar_url : '' }}" alt="" class="img-fluid mb-2 mt-2" style="max-height: 200px">
+                    <input class="form-control form-control-sm" id="gambar" name="gambar" type="file" value="{{ old('gambar', $buku->gambar) }}">
+                </div>
                 <div class="form-group">
                     <label for="isi" class="form-label mt-2">Isi Resensi</label>
                     <textarea class="form-control" id="isi" name="isi">{{ old('isi', $buku->isi) }}</textarea>

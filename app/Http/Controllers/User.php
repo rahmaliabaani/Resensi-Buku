@@ -24,7 +24,7 @@ class User extends Controller
     {            
         return view('pengguna.data-resensi.index', [
             'title' => 'Data Resensi Pengguna',
-            'bukuPengguna' => Buku::where('user_id', auth()->id())->latest('bukus.waktu_post')->with('kategori')->with('user')->filter()->paginate(20)->withQueryString(),
+            'bukuPengguna' => Buku::where('user_id', auth()->id())->latest('bukus.created_at')->with('kategori')->with('user')->filter()->paginate(20)->withQueryString(),
             'namaPengguna' => auth()->user()->name,
             ]);
     }

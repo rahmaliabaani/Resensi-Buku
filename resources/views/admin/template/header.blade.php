@@ -16,6 +16,7 @@
   {{-- icon bootstrap --}}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <script src="/../../js/ckeditor5.js"></script>
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon.png">
 </head>
 
 <body>

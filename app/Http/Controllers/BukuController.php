@@ -6,6 +6,7 @@ use App\Models\Buku;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class BukuController extends Controller
@@ -18,7 +19,7 @@ class BukuController extends Controller
     {
         return view('beranda', [
             "title" => "Beranda",
-            "buku" => Buku::latest('bukus.waktu_post')->paginate(3)->withQueryString()
+            "buku" => Buku::latest('bukus.created_at')->paginate(3)->withQueryString()
         ]);
     }
 
@@ -26,7 +27,7 @@ class BukuController extends Controller
     {
         return view('buku', [
             "title" => "Buku",
-            "buku" => Buku::latest('bukus.waktu_post')->filter()->paginate(12)->withQueryString()
+            "buku" => Buku::latest('bukus.created_at')->filter()->paginate(12)->withQueryString()
         ]);
     }
 
@@ -42,7 +43,7 @@ class BukuController extends Controller
     {
         return view('admin.data-resensi.index', [
             "title" => "Data Resensi",
-            "buku" => Buku::latest('bukus.waktu_post')->with('kategori')->with('user')->filter()->paginate(20)->withQueryString(),
+            "buku" => Buku::latest('bukus.created_at')->with('kategori')->with('user')->filter()->paginate(20)->withQueryString(),
             ]);
     }
 
@@ -63,16 +64,23 @@ class BukuController extends Controller
     public function storeBukuPengguna(Request $request)
     {  
 
-    $this->validate($request, [
+        $request->validate([
             'judul' => 'required|min:5',
             'kategori_id' => 'required',
             'penerbit' => 'required|min:5',
             'pengarang' => 'required|min:5',
             'tahun_terbit' => 'required|numeric',
             'tebal_buku' => 'required|numeric',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'isi' => 'required',
         ]);
 
+        $data = $request->except('gambar');
+        // upload gambar jika ada
+        if ($request->hasFile('gambar')) {
+            $data['gambar'] = $request->file('gambar')->store('gambar-buku', 'public');
+        }
+        // generate slug unik
         $slug = Str::slug($request->judul);
         $originalSlug = $slug;
         $count = 1;
@@ -81,18 +89,8 @@ class BukuController extends Controller
             $slug = $originalSlug . '-' . $count++;
         }
         // insert data ketabel buku
-        Buku::create([
-            'judul' => $request->judul,
-            'slug' => $slug,
-            'kategori_id' => $request->kategori_id,
-            'user_id' =>  Auth::id(),
-            'penerbit' => $request->penerbit,
-            'pengarang' => $request->pengarang,
-            'tahun_terbit' => $request->tahun_terbit,
-            'tebal_buku' => $request->tebal_buku,
-            'isi' => $request->isi,
-        ]);
-        return redirect()->route('pengguna.data-resensi.index');
+        Buku::create($data);
+        return redirect()->route('pengguna.data-resensi.index')->with('success', 'Data Berhasil ditambahkan!');
     }
 
     /**
@@ -129,19 +127,38 @@ class BukuController extends Controller
             'pengarang' => 'required|min:5',
             'tahun_terbit' => 'required|numeric',
             'tebal_buku' => 'required|numeric',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'isi' => 'required',
         ]);
 
-        $buku->update($request->all());
+        $data = $request->except('gambar');
+        
+        // upload gambar baru
+        if ($request->hasFile('gambar')) {
+            // upload gambar lama kalau ada
+            if ($buku->gambar && Storage::disk('public')->exists($buku->gambar)) {
+                Storage::disk('public')->delete($buku->gambar);
+            }
+            // simpan gambar baru
+            $data['gambar'] = $request->file('gambar')->store('gambar-buku', 'public');
+        }
 
-        return redirect()->route('pengguna.data-resensi.index');
+        $buku->update($data);
+
+        return redirect()->route('pengguna.data-resensi.index')->with('success', 'Data Berhasil diperbarui!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Buku $buku)
+    public function destroyBukuPengguna($slug)
     {
-        //
+        $buku = Buku::where('slug', $slug)->firstOrFail();
+        if ($buku->gambar && Storage::disk('public')->exists($buku->gambar)) {
+            Storage::disk('public')->delete($buku->gambar);
+        }
+        $buku->delete();
+
+        return redirect()->route('pengguna.data-resensi.index')->with('success', 'Data Berhasil dihapus!');
     }
 }

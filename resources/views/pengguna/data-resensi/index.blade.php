@@ -9,7 +9,25 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3 mt-2">
+            <div class="col-md-12">
+                {{-- error --}}
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                {{-- success --}}
+                @if (session('success'))
+                    <div id="success-alert" class="alert alert-success" role="alert">
+                        {{ session('success') }}
+                    </div>
+                @endif
+            </div>
+            <div class="col-md-3 mt-1">
                 <form action="{{ route('pengguna.data-resensi.index') }}" method="GET">
                     <div class="input-group input-group-sm">
                         <input type="text" class="form-control" placeholder="Cari.." name="cari" value="{{ request('cari') }}">
@@ -17,7 +35,7 @@
                     </div>
                 </form>
             </div>
-            <div class="col-md-9 d-flex mt-2 mb-2 justify-content-md-end">
+            <div class="col-md-9 d-flex mt-1 mb-2 justify-content-md-end">
                 <a href="/pengguna/data-resensi/tambah" type="button" class="btn btn-primary btn-sm "><i class="bi bi-clipboard-plus-fill"></i> Tambah</a>
             </div>
         </div>
@@ -27,7 +45,6 @@
                     <thead class="text-center">
                         <tr>
                             <th>No</th>
-                            <th>Penulis Resensi</th>
                             <th>Judul</th>
                             <th>Kategori</th>
                             <th>Pengarang</th>
@@ -40,13 +57,18 @@
                         @foreach($bukuPengguna as $bkP)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $bkP->user->name }}</td>
                             <td>{{ $bkP->judul }}</td>
                             <td>{{ $bkP->kategori->nama }}</td>
                             <td>{{ $bkP->pengarang }}</td>
                             <td>{{ $bkP->penerbit }}</td>
                             <td>{{ $bkP->tahun_terbit }}</td>
-                            <td><a href="{{ route('pengguna.data-resensi.edit', $bkP->slug) }}" type="submit" class="btn btn-warning btn-sm">Ubah</a> <a href="#" type="submit" class="btn btn-danger btn-sm">Hapus</a></td>
+                            <td><a href="{{ route('pengguna.data-resensi.edit', $bkP->slug) }}" type="submit" class="btn btn-warning btn-sm mb-2"><i class="bi bi-pencil-fill"></i> Ubah</a> 
+                                <form action="{{ route('pengguna.data-resensi.destroy', $bkP->slug) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3-fill"></i> Hapus</button>
+                                </form>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -55,4 +77,13 @@
         </div>
     </div>
 </section>
+
+<script>
+    setTimeout(() => {
+        let alert = document.getElementById('success-alert');
+        if (alert) {
+            alert.style.display = 'none';
+        }
+    }, 3000);
+</script>
 @endsection

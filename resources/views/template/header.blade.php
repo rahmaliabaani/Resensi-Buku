@@ -15,6 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   {{-- icon bootstrap --}}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon.png">
 </head>
 
 <body>
@@ -42,7 +43,7 @@
           </li>
         @auth
           <li class="nav-item dropdown mt-1">
-            <a class="nav-link dropdown-toggle px-3 py-2 text-white fs-6 {{ ($title === 'Dashboard') ? 'active' : '' }}" style="background-color: #b90e0e;" href="#" role="button" data-bs-toggle="dropdown">
+            <a class="nav-link dropdown-toggle px-3 py-2 text-white fs-6 rounded-pill {{ ($title === 'Dashboard') ? 'active' : '' }}" style="background-color: #b90e0e;" href="#" role="button" data-bs-toggle="dropdown">
               {{ auth()->user()->name }}
             </a>
             <ul class="dropdown-menu">

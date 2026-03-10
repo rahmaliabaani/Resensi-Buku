@@ -18,8 +18,18 @@ class Buku extends Model
         'penerbit',
         'tahun_terbit',
         'tebal_buku',
-        'isi'
+        'isi',
+        'gambar'
     ];
+
+    // Set default gambar buku
+    public function getGambarUrlAttribute()
+    {
+        if ($this->gambar) {
+            return asset('storage/' . $this->gambar);
+        }
+        return asset('storage/gambar-buku/default.jpg');
+    }
 
     public function scopeFilter(Builder $query) : void
     {
