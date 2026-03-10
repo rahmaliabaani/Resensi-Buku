@@ -27,7 +27,7 @@
                     </div>
                 @endif
             </div>
-            <div class="col-md-3 mt-1">
+            <div class="col-md-3 mt-2">
                 <form action="{{ route('pengguna.data-resensi.index') }}" method="GET">
                     <div class="input-group input-group-sm">
                         <input type="text" class="form-control" placeholder="Cari.." name="cari" value="{{ request('cari') }}">
@@ -35,7 +35,7 @@
                     </div>
                 </form>
             </div>
-            <div class="col-md-9 d-flex mt-1 mb-2 justify-content-md-end">
+            <div class="col-md-9 d-flex mt-2 mb-2 justify-content-md-end">
                 <a href="/pengguna/data-resensi/tambah" type="button" class="btn btn-primary btn-sm "><i class="bi bi-clipboard-plus-fill"></i> Tambah</a>
             </div>
         </div>
@@ -66,7 +66,7 @@
                                 <form action="{{ route('pengguna.data-resensi.destroy', $bkP->slug) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3-fill"></i> Hapus</button>
+                                    <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3-fill"></i>Hapus</button>
                                 </form>
                             </td>
                         </tr>

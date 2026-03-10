@@ -63,7 +63,7 @@
                 </div>
                 <div class="form-group">
                     <label for="isi" class="form-label mt-2">Isi Resensi</label>
-                    <textarea class="form-control" placeholder="Leave a comment here" id="isi" name="isi">{{ old('isi') }}</textarea>
+                    <textarea class="form-control" id="isi" name="isi">{{ old('isi', $buku->isi ?? '') }}</textarea>
                 </div>
                 <div class="form-group mt-3">
                     <input class="btn btn-primary btn-sm" type="submit" value="Simpan">
@@ -88,5 +88,12 @@ function previewImage(){
     }
 
 }
+</script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#isi'))
+        .catch(error => {
+            console.error(error);
+        });
 </script>
 @endsection

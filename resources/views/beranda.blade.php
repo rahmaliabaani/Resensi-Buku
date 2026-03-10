@@ -31,7 +31,7 @@
             <div class="card-body">
               <h4><a href="/buku/{{ $bk->slug }}" class="text-decoration-none">{{ Str::limit(strip_tags($bk->judul), 25, '...') }}</a></h4>
               <h6><a href="/penulis/" class="text-decoration-none">{{ $bk->user->name }}</a> | <a href="/kategori/" class="text-decoration-none">{{ $bk->kategori->nama }}</a></h6>
-              <p class="text-truncate">{{ $bk->isi }}</p>
+              <p class="text-truncate">{{ strip_tags($bk->isi) }}</p>
             </div>
           </div>
         </div>
